@@ -14,7 +14,7 @@ A robust, read-only backend service built with Java Spring Boot that provides RE
 - [Setup Instructions](#-setup-instructions)
 - [Usage Examples](#-usage-examples)
 - [Project Structure](#-project-structure)
-- [Contributing](#-contributing)
+
 
 ---
 
@@ -26,23 +26,21 @@ This project implements a **read-only backend service** exposing REST APIs using
 Build clean, well-structured GET APIs that retrieve data from MySQL database and return it in consistent JSON format with proper error handling and HTTP status codes.
 
 ### Scope
-- Fetch all records from database tables
+- Fetch all records from database table
 - Fetch specific record details by ID
-- Filter data using query parameters
-- Handle errors gracefully with appropriate HTTP status codes
-- Follow industry-standard REST API conventions
+- Filter data using query paramaeter (name)
+- Handle errors with appropriate HTTP status codes
+
 
 ---
 
 ##  Features
 
-- **Read-Only APIs**: Secure and multiple  GET-only endpoints 
-- **Clean Architecture**: Proper separation of Controller, Service, and Repository layers
-- **Error Handling**: Comprehensive error handling with meaningful HTTP status codes
-- **Query Parameters**: Support for filtering, sorting, and pagination
+- ** APIs**: Secure and multiple  GET-only endpoints 
+- **Proper Architecture**: Proper separation of Controller, Service, and Repository layers
+- **Error Handling**:  error handling with proper HTTP status codes
 - **JSON Responses**: Consistent, well-structured JSON response format
 - **MySQL Integration**: Robust database connectivity using Spring Data JPA
-- **Input Validation**: Request validation and sanitization
 - **Logging**: Structured logging for debugging and monitoring
 
 ---
@@ -61,35 +59,36 @@ Build clean, well-structured GET APIs that retrieve data from MySQL database and
 
 ---
 
-## 🏗️ Architecture
+## 🏗 Architecture
 
 This project follows a **three-layered architecture** pattern:
 
 ```
 ┌─────────────────────────────────────────────┐
-│          Controller Layer                    │
-│  (Handles HTTP requests/responses)           │
-│  - Input validation                          │
-│  - Response formatting                       │
+│          Controller Layer                   │
+│  (Handles HTTP requests/responses)          │
+│  - Get Mapping                              │
+│  - Response formatting                      │
 └──────────────────┬──────────────────────────┘
                    │
 ┌──────────────────▼──────────────────────────┐
-│          Service Layer                       │
-│  (Business logic & processing)               │
-│  - Data transformation                       │
-│  - Business rules                            │
+│          Service Layer                      │
+│  (Business logic & processing)              │
+│  - Operations performed                     |
+|  - Data Transformed                         │
+│                                             │
 └──────────────────┬──────────────────────────┘
                    │
 ┌──────────────────▼──────────────────────────┐
-│          Repository Layer                    │
-│  (Data access & persistence)                 │
-│  - Database queries                          │
-│  - JPA operations                            │
+│          Repository Layer                   │
+│  (Data access & persistence)                │
+│  - Database queries                         │
+│  - JPA operations                           │
 └──────────────────┬──────────────────────────┘
                    │
 ┌──────────────────▼──────────────────────────┐
-│          MySQL Database                      │
-│  (Data storage)                              │
+│          MySQL Database                     │
+│ Customer table (Data storage)               |              
 └─────────────────────────────────────────────┘
 ```
 
@@ -97,14 +96,12 @@ This project follows a **three-layered architecture** pattern:
 
 **Controller Layer** (`@RestController`)
 - Receives HTTP GET requests
-- Validates input parameters
+- Use @PathVariable and @RequestParam to validate input
 - Delegates to service layer
-- Formats JSON responses
 - Handles HTTP status codes
 
 **Service Layer** (`@Service`)
 - Implements business logic
-- Processes and transforms data
 - Handles exceptions
 - Calls repository methods
 
@@ -129,7 +126,7 @@ email
 
 ---
 
-## 📡 API Documentation
+## API Documentation
 ### Endpoints
 
 #### 1. **Get All Users**
@@ -154,8 +151,7 @@ GET /getall
 GET /getbyid/{id}
 ```
 
-**Parameters:**
-- `id` (path) - User ID (Long)
+
 
 **Response (200 OK):**
 ```json
@@ -236,15 +232,11 @@ Navigate to `src/main/resources/application.properties` and configure:
 server.port=8080
 
 # MySQL Database Configuration
-spring.datasource.url=jdbc:mysql://localhost:3306/uniasia_db
+spring.datasource.url=jdbc:mysql://localhost:3306/emp_try
 spring.datasource.username=your_mysql_username
 spring.datasource.password=your_mysql_password
-spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
-
-# JPA/Hibernate Configuration
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQLDialect
 spring.jpa.hibernate.ddl-auto=update
-spring.jpa.show-sql=true
-spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL8Dialect
 
 
 ```
@@ -290,7 +282,7 @@ src/main/java/com/java/portfolio
 - **`application.properties`** - Database and application settings
 - **Controller classes** - REST endpoint definitions
 - **Service classes** - Business logic implementation
-- **Repository interfaces** - Database query methods
+- **Repository interfaces** - JPA Database query methods
 - **Model/Entity classes** - Database table mappings
 
 ---
